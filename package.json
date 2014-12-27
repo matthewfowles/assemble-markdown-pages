@@ -1,0 +1,30 @@
+{
+  "name": "assemble-markdown-pages",
+  "version": "0.1.0",
+  "description": "An Assemble plugin to convert straight markdown files (with YFM) to into pages.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/matthewfowles/assemble-markdown-pages.git"
+  },
+  "keywords": [
+    "Assemble",
+    "Grunt",
+    "Middleware"
+  ],
+  "author": "Matthew Fowles",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/matthewfowles/assemble-markdown-pages/issues"
+  },
+  "homepage": "https://github.com/matthewfowles/assemble-markdown-pages",
+  "dependencies": {
+    "chalk": "^0.5.1",
+    "glob": "^4.3.2",
+    "marked": "^0.3.2",
+    "yfm": "^0.2.0"
+  }
+}
