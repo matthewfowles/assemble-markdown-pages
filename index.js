@@ -1,9 +1,10 @@
-var fs = require('fs');
+ var fs = require('fs');
  var glob = require("glob");
  var yfm = require('yfm');
  var path = require('path');
  var marked = require('marked');
  var chalk = require('chalk');
+
 
 
  var options = {
@@ -13,37 +14,100 @@ var fs = require('fs');
 
  var markdownPages = function(params, next) {
 
+    if(!params.assemble.options.markdownPages) {
+        console.error(chalk.red('You have not entered required parameters for assemble markdown pages'));
+        next();
+        return;
+    }
+
      var settings = {
          src: params.assemble.options.markdownPages.src,
          dest: params.assemble.options.markdownPages.dest,
          subFolder: params.assemble.options.markdownPages.subFolder || false,
-         gfm: params.assemble.options.markdownPages.gfm || true,
-         tables: params.assemble.options.markdownPages.tables || true,
-         breaks: params.assemble.options.markdownPages.breaks || false,
-         pedantic: params.assemble.options.markdownPages.pedantic || false,
-         sanitize: params.assemble.options.markdownPages.sanitize || true,
-         smartLists: params.assemble.options.markdownPages.smartLists || true,
-         smartypants: params.assemble.options.markdownPages.smartypants || false
+         gfm: function() {
+             if (typeof params.assemble.options.markdownPages.gfm !== 'undefined') {
+                 return params.assemble.options.markdownPages.gfm;
+             } else {
+                 return true;
+             }
+         },
+         tables: function() {
+             if (typeof params.assemble.options.markdownPages.tables !== 'undefined') {
+                 return params.assemble.options.markdownPages.tables;
+             } else {
+                 return true;
+             }
+         },
+         breaks: function() {
+             if (typeof params.assemble.options.markdownPages.breaks !== 'undefined') {
+                 return params.assemble.options.markdownPages.breaks;
+             } else {
+                 return false;
+             }
+         },
+         pedantic: function() {
+             if (typeof params.assemble.options.markdownPages.pedantic !== 'undefined') {
+                 return params.assemble.options.markdownPages.pedantic;
+             } else {
+                 return false;
+             }
+         },
+         sanitize: function() {
+             if (typeof params.assemble.options.markdownPages.sanitize !== 'undefined') {
+                 return params.assemble.options.markdownPages.sanitize;
+             } else {
+                 return true;
+             }
+         },
+         smartLists: function() {
+             if (typeof params.assemble.options.markdownPages.smartLists !== 'undefined') {
+                 return params.assemble.options.markdownPages.smartLists;
+             } else {
+                 return true;
+             }
+         },
+         smartypants: function() {
+             if (typeof params.assemble.options.markdownPages.smartypants !== 'undefined') {
+                 return params.assemble.options.markdownPages.smartypants;
+             } else {
+                 return false;
+             }
+         }
 
      }
+
 
      marked.setOptions({
          renderer: new marked.Renderer(),
-         gfm: settings.gfm,
-         tables: settings.tables,
-         breaks: settings.breaks,
-         pedantic: settings.pedantic,
-         sanitize: settings.sanitize,
-         smartLists: settings.smartLists,
-         smartypants: settings.smartypants
+         gfm: settings.gfm(),
+         tables: settings.tables(),
+         breaks: settings.breaks(),
+         pedantic: settings.pedantic(),
+         sanitize: settings.sanitize(),
+         smartLists: settings.smartLists(),
+         smartypants: settings.smartypants()
      });
 
+
      if (!settings.src || !settings.dest) {
-         return console.error(chalk.red('have not entered required parameters'));
+         console.error(chalk.red('You have not entered required parameters for assemble markdown pages'));
+         next();
+         return;
      }
 
+     var files = [];
 
-     var files = glob.sync(settings.src, [options]);
+     function isArray(object) {
+         return object.constructor === Array;
+     }
+
+     if (isArray(settings.src)) {
+         for (var i = settings.src.length - 1; i >= 0; i--) {
+             files.push.apply(files, glob.sync(settings.src[i], [options]));
+         };
+     } else {
+         files = glob.sync(settings.src, [options]);
+     }
 
 
      if (files.length === 0) {
@@ -117,7 +181,7 @@ var fs = require('fs');
      };
 
 
-    console.info(chalk.cyan(count + ' files converted!'));     
+     console.info(chalk.cyan(count + ' files converted!'));
 
 
      next();

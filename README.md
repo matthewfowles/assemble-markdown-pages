@@ -88,7 +88,7 @@ If set to false all your HTML files will be generated with the name of the markd
 
 ### markdown 
 
-The plugin using the Marked Module to convert the Markdown into HTML. The rest of the options are markdown options. You can find out what each of the the options does [https://github.com/chjj/marked](here). 
+The plugin using the Marked Module to convert the Markdown into HTML. The rest of the options are markdown options. You can find out what each of the the options does [here](https://github.com/chjj/marked). 
 
 There is currently no support for the Renderer option. This is as default. Please create a feature request if you wish to see this in future version's
 
