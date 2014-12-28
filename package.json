@@ -1,6 +1,6 @@
 {
   "name": "assemble-markdown-pages",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "An Assemble plugin to convert straight markdown files (with YFM) to into pages.",
   "main": "index.js",
   "scripts": {
